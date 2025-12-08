@@ -118,6 +118,7 @@ These scripts **will partition disks automatically**.
 Double-check device names before running.  
 Modify the scripts to match your preferred layout if needed.
 
+These scripts are modified and optimized for MY hardware and usage, if you want a barebones archinstall script, see install.sh, everything after arch-chroot will have to be done manually by you.
 ---
 
 ## 🤝 Contributions
