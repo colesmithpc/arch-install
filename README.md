@@ -47,15 +47,15 @@ These scripts are intentionally simple, transparent, and easily modifiable for y
 ### 1. Clone the repo on your Arch ISO environment
 
 ```bash
-git clone https://github.com/yourusername/arch-install.git
+git clone https://github.com/colesmithpc/arch-install.git
 cd arch-install
 ```
 
 ### 2. Review the scripts (recommended)
 
 ```bash
-nano pre-chroot.sh
-nano post-chroot.sh
+vim pre-chroot.sh
+vim post-chroot.sh
 ```
 
 ### 3. Make scripts executable
