@@ -16,14 +16,14 @@ timedatectl set-ntp true
 # --- 3. Format partitions ---
 echo "[*] Formatting partitions..."
 mkfs.fat -F32 /dev/nvme0n1p1
-mkswap /dev/nvme0n1p2
-mkfs.ext4 -F /dev/nvme0n1p3
+mkfs.ext4 -F /dev/nvme0n1p2
+mkswap /dev/nvme0n1p3
 
 # --- 4. Mount ---
 echo "[*] Mounting partitions..."
-mount /dev/nvme0n1p3 /mnt
+mount /dev/nvme0n1p2 /mnt
 mount --mkdir /dev/nvme0n1p1 /mnt/boot
-swapon /dev/nvme0n1p2
+swapon /dev/nvme0n1p3
 
 # --- 5. Pacstrap (minimal base only) ---
 echo "[*] Installing base system..."
