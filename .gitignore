@@ -1,0 +1,60 @@
+# --- SYSTEM FILES ---
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# --- LOGS ---
+*.log
+logs/
+
+# --- BUILD / COMPILED FILES ---
+*.o
+*.so
+*.a
+*.out
+
+# --- PACKAGE MANAGER / CACHE ---
+pkg/
+src/
+*.tar.zst
+*.tar.gz
+
+# --- EDITOR / IDE JUNK ---
+.vscode/
+.idea/
+*.code-workspace
+
+# --- PYTHON ---
+__pycache__/
+*.pyc
+
+# --- NODE ---
+node_modules/
+npm-debug.log
+
+# --- RUST ---
+target/
+
+# --- GO ---
+bin/
+pkg/
+
+# --- DOCKER ---
+*.env
+.env*
+
+# --- BACKUPS ---
+*~
+#*#
+
+# --- SECRETS YOU SHOULD NEVER COMMIT ---
+ssh/
+**/id_rsa
+**/id_rsa.pub
+*.key
+*.pem
+*.p12
+*.cert
+*.crt
+

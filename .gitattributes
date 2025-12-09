@@ -1,0 +1,26 @@
+# --- Normalize line endings ---
+* text=auto
+
+# --- Shell scripts: treat as UTF-8 text ---
+*.sh text eol=lf
+
+# --- Make GitHub highlight these files properly ---
+*.bashrc linguist-language=Shell
+*.bash_profile linguist-language=Shell
+*.zshrc linguist-language=Shell
+*.conf linguist-language=INI
+
+# --- Improve diff for system/service files ---
+*.service diff=systemd
+*.timer diff=systemd
+
+# --- Treat patches as binary-safe text ---
+*.patch text
+
+# --- Ignore large binary diffs (prevent slowdown) ---
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+
