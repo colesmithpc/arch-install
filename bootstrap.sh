@@ -123,6 +123,68 @@ yay -S --noconfirm ttf-iosevka-extended
 echo "[*] Updating font cache..."
 sudo fc-cache -fv
 
+# --- MACOS-TIER FONT RENDERING ---
+echo "[+] Applying macOS-style font rendering..."
+
+# Install freetype2 with subpixel rendering patches
+sudo pacman -S --noconfirm freetype2 fontconfig cairo
+
+# Create fontconfig config directory
+sudo mkdir -p /etc/fonts/conf.d
+
+# Enable subpixel rendering & light hinting (like macOS)
+sudo tee /etc/fonts/conf.d/10-sub-pixel-rgb.conf >/dev/null <<EOF
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+  <match target="font">
+    <edit mode="assign" name="rgba">
+      <const>rgb</const>
+    </edit>
+  </match>
+</fontconfig>
+EOF
+
+sudo tee /etc/fonts/conf.d/10-hinting-slight.conf >/dev/null <<EOF
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+  <match target="font">
+    <edit mode="assign" name="hintstyle">
+      <const>hintslight</const>
+    </edit>
+  </match>
+</fontconfig>
+EOF
+
+sudo tee /etc/fonts/conf.d/10-antialias.conf >/dev/null <<EOF
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+  <match target="font">
+    <edit mode="assign" name="antialias">
+      <bool>true</bool>
+    </edit>
+  </match>
+</fontconfig>
+EOF
+
+sudo tee /etc/fonts/conf.d/10-stem-darkening.conf >/dev/null <<EOF
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+  <match target="font">
+    <edit name="lcdfilter" mode="assign">
+      <const>lcddefault</const>
+    </edit>
+    <edit name="stem-darkening" mode="assign">
+      <bool>true</bool>
+    </edit>
+  </match>
+</fontconfig>
+EOF
+
+sudo fc-cache -fv
 
 echo "==========================================="
 echo "  Bootstrap Complete!"
