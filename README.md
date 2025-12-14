@@ -1,133 +1,94 @@
-# Arch Install Automation Scripts
+# Arch Linux Install Script (Personal Use)
 
-This repository contains two scripts — **pre-chroot.sh** and **post-chroot.sh** — designed to fully automate my personal Arch Linux installation workflow. These scripts streamline system setup, enforce consistency across reinstalls, and reduce manual effort by performing everything from disk partitioning to base system setup and post-install configuration.
+A two-stage Arch Linux installation script tailored for my personal workflow and hardware.
 
-Both scripts are intended for **UEFI systems** and assume you understand the basics of installing Arch. They automate the tedious parts while keeping the workflow transparent and modifiable.
-
----
-
-## 📁 Scripts Overview
-
-### **pre-chroot.sh**
-Runs **before** entering the chroot environment.  
-Handles:
-- Disk partitioning
-- Filesystem creation
-- Mounting
-- Pacstrap base system install
-- Generating fstab
-- Preparing to enter chroot
-
-### **post-chroot.sh**
-Runs **inside** the chroot environment.  
-Handles:
-- Localization
-- User creation
-- Bootloader setup
-- System configuration (hostname, timezone, services)
-- Optional packages and customization
+This repo exists for **learning, iteration, and reproducibility**, not as a one-size-fits-all installer.
 
 ---
 
-## 🚀 Goal of These Scripts
+## Overview
 
-I created these scripts to streamline Arch installations by:
-- Automating repetitive setup tasks  
-- Maintaining consistent system configuration across machines  
-- Speeding up pentesting VM deployments  
-- Providing a fast, reproducible, minimal Arch environment  
-- Supporting my scripting-focused workflow as an ethical hacker
+The install process is intentionally split into **two scripts**:
 
-These scripts are intentionally simple, transparent, and easily modifiable for your own workflow.
+1. **`install.sh`**  
+   Runs on the Arch ISO (pre-chroot)
+   - Disk partitioning & formatting
+   - Mounting
+   - `pacstrap` (base system, drivers, desktop)
+   - `fstab` generation
+   - Drops into chroot
 
----
+2. **`chroot.sh`**  
+   Runs *inside* the installed system
+   - Timezone & locale
+   - Hostname & hosts
+   - User creation & sudo
+   - Bootloader installation (systemd-boot)
+   - Initramfs generation
+   - Systemd service enablement
 
-## 📦 How to Use
-
-### 1. Clone the repo on your Arch ISO environment
-
-```bash
-git clone https://github.com/colesmithpc/arch-install.git
-cd arch-install
-```
-
-### 2. Review the scripts (recommended)
-
-```bash
-vim pre-chroot.sh
-vim post-chroot.sh
-```
-
-### 3. Make scripts executable
-
-```bash
-chmod +x pre-chroot.sh post-chroot.sh
-```
-
-### 4. Run the Pre-Chroot Script
-
-```bash
-./pre-chroot.sh
-```
-
-This script will:
-- Partition your drive
-- Format partitions
-- Mount everything
-- Install the base system
-- Generate fstab
-- Copy post-chroot.sh into `/mnt/root/`
-
-When finished, you will be ready to enter the chroot environment.
-
-### 5. Chroot Into the New System
-
-```bash
-arch-chroot /mnt
-```
-
-### 6. Run the Post-Chroot Script
-
-Inside the chroot:
-
-```bash
-./post-chroot.sh
-```
-
-This script will finalize configuration:
-- Set timezone and locale
-- Configure hostname
-- Create user + set passwords
-- Install GRUB or systemd-boot (depending on your script version)
-- Enable networking and other services
-
-### 7. Reboot
-
-```bash
-exit
-reboot
-```
-
-Remove installation media and boot into your new Arch system.
+This separation keeps responsibilities clear and the scripts easy to reason about.
 
 ---
 
-## ⚠️ Disclaimer
+## Target Setup
 
-These scripts **will partition disks automatically**.  
-Double-check device names before running.  
-Modify the scripts to match your preferred layout if needed.
+- **Boot mode:** UEFI
+- **Filesystem:** GPT + FAT32 (EFI) + ext4 (root)
+- **Desktop:** KDE Plasma
+- **Display Manager:** SDDM
+- **GPU:** NVIDIA (proprietary drivers)
+- **Audio:** PipeWire
+- **Networking:** NetworkManager
+- **Bootloader:** systemd-boot
 
-These scripts are modified and optimized for MY hardware and usage, if you want a barebones archinstall script, see install.sh, everything after arch-chroot will have to be done manually by you.
+> Disk names, packages, and assumptions are **hardware-specific**.
+
 ---
 
-## 🤝 Contributions
+## ⚠️ Warning
 
-If you want to improve the scripts, add flags, or modularize steps, PRs are welcome.
+**Do NOT blindly run this script.**
+
+- Disk device names (`/dev/nvme0n1`) are hardcoded
+- Locale, timezone, hostname, and user are opinionated
+- NVIDIA-specific configuration is included
+- This will **destroy all data** on the target disk
+
+Read and understand every command before use.
 
 ---
 
-## 📜 License
+## Usage (Intentional, Not Automated)
 
-MIT License — do whatever you'd like, just don’t blame me if your disk gets nuked.
+1. Boot Arch ISO
+2. Review and edit `install.sh` as needed
+3. Run `install.sh`
+4. `install.sh` copies and executes `chroot.sh`
+5. Reboot into the installed system
 
+This is designed to be **transparent**, not fire-and-forget.
+
+---
+
+## Design Philosophy
+
+- Do heavy work **before chroot**
+- Do identity, boot, and permissions **inside chroot**
+- Do user experience **after first boot**
+- Prefer clarity over cleverness
+- Fail loudly if something breaks
+
+---
+
+## License
+
+No license.  
+Use for reference, learning, or inspiration — not as a drop-in installer.
+
+---
+
+## Notes
+
+This repo will evolve as my Arch workflow evolves.
+Expect breaking changes.
