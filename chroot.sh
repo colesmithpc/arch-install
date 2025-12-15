@@ -51,5 +51,6 @@ systemctl enable sddm
 systemctl enable bluetooth
 systemctl enable thermald
 systemctl enable avahi-daemon
+systemctl enable fstrim.timer
 
 
