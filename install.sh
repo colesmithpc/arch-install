@@ -31,7 +31,7 @@ pacstrap /mnt \
   base linux linux-firmware linux-headers \
   sudo vim networkmanager \
   intel-ucode mesa \
-  plasma kde-applications sddm \
+  plasma plasma-desktop dolphin kate konsole sddm \
   nvidia nvidia-utils nvidia-settings \
   sof-firmware \
   pipewire pipewire-alsa pipewire-pulse wireplumber \
