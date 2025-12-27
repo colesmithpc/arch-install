@@ -1,12 +1,15 @@
-#!/bin/bash
-# Automated arch installation script, change parameters to your liking
+#!/bin/bash - crumb
 
-set -e
+# automated arch linux installation script (IT WILL FORMAT DISK)
+# change disk listing names to whatever yours is listed as!
+# change names and passwords to yours aswell!
 
-DISK="/dev/nvme1n1"
-HOSTNAME="precision"
-USERNAME="cole"
-PASSWORD="coleman2002"
+set -euo pipefail
+
+DISK="<CHANGEME>"
+HOSTNAME="<CHANGEME>"
+USERNAME="<CHANGEME>"
+PASSWORD="<CHANGEME>"
 SWAP_SIZE="8G"
 
 echo "Partitioning $DISK..."
@@ -23,16 +26,15 @@ mount "${DISK}p2" /mnt
 mkdir -p /mnt/boot
 mount "${DISK}p1" /mnt/boot
 
-echo "Installing base system and KDE..."
-pacstrap /mnt base linux linux-firmware sudo vim nano networkmanager \
-	xorg xorg-xinit xorg-xinput plasma kde-applications sddm ttf-dejavu ttf-liberation \
-	plasma-nm kde-gtk-config kde-config-gtk-style ttf-ubuntu-font-family
+echo "Installing base system and sway..."
+pacstrap /mnt base linux-lts linux-lts-headers linux-firmware sudo vim neovim networkmanager \
+    sway swaybg swaylock swayidle waybar kitty xdg-utils xdg-desktop-portal firefox fastfetch thunar
 
 echo "Generating fstab..."
 genfstab -U /mnt >> /mnt/etc/fstab
 
 arch-chroot /mnt /bin/bash <<EOF
-ln -sf /usr/share/zoneinfo/US/Central /etc/localtime
+ln -sf /usr/share/zoneinfo/US/Chicago /etc/localtime
 hwclock --systohc
 
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
@@ -59,13 +61,12 @@ BOOT
 
 cat <<ARCH > /boot/loader/entries/arch.conf
 title Arch Linux
-linux /vmlinuz-linux
-initrd /initramfs-linux.img
+linux /vmlinuz-linux-lts
+initrd /initramfs-linux-lts.img
 options root=PARTUUID=$(blkid -s PARTUUID ${DISK}p2) rw
 ARCH
 
 systemctl enable NetworkManager
-systemctl enable sddm
 systemctl enable bluetooth
 systemctl enable cups
 EOF
