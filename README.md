@@ -1,6 +1,7 @@
 # Arch Linux Install Script (Personal Use)
 
-A two-stage Arch Linux installation script tailored for my personal workflow and hardware.
+A full single stage installation script for my personal workflow
+This is tailored to my Dell Precision and my personal preferences, sway, kitty, etc
 
 This repo exists for **learning, iteration, and reproducibility**, not as a one-size-fits-all installer.
 
@@ -8,38 +9,20 @@ This repo exists for **learning, iteration, and reproducibility**, not as a one-
 
 ## Overview
 
-The install process is intentionally split into **two scripts**:
-
-1. **`install.sh`**  
-   Runs on the Arch ISO (pre-chroot)
-   - Disk partitioning & formatting
-   - Mounting
-   - `pacstrap` (base system, drivers, desktop)
-   - `fstab` generation
-   - Drops into chroot
-
-2. **`chroot.sh`**  
-   Runs *inside* the installed system
-   - Timezone & locale
-   - Hostname & hosts
-   - User creation & sudo
-   - Bootloader installation (systemd-boot)
-   - Initramfs generation
-   - Systemd service enablement
-
-This separation keeps responsibilities clear and the scripts easy to reason about.
-
+**`install.sh`**  
+- Once cloned into the repo, simply run `./install.sh` to run the installation script
+- Make sure to change these parameters:
+- DISK, HOSTNAME, USERNAME, PASSWORD > Located at the top of the script.
 ---
 
 ## Target Setup
 
 - **Boot mode:** UEFI
 - **Filesystem:** GPT + FAT32 (EFI) + ext4 (root)
-- **Desktop:** KDE Plasma
-- **Display Manager:** SDDM
+- **WM:** Sway
 - **GPU:** NVIDIA (proprietary drivers)
 - **Audio:** PipeWire
-- **Networking:** NetworkManager
+- **Networking:** Nmcli
 - **Bootloader:** systemd-boot
 
 > Disk names, packages, and assumptions are **hardware-specific**.
@@ -50,7 +33,6 @@ This separation keeps responsibilities clear and the scripts easy to reason abou
 
 **Do NOT blindly run this script.**
 
-- Disk device names (`/dev/nvme0n1`) are hardcoded
 - Locale, timezone, hostname, and user are opinionated
 - NVIDIA-specific configuration is included
 - This will **destroy all data** on the target disk
@@ -64,7 +46,7 @@ Read and understand every command before use.
 1. Boot Arch ISO
 2. Review and edit `install.sh` as needed
 3. Run `install.sh`
-4. `install.sh` copies and executes `chroot.sh`
+4. `install.sh` runs all the needed commands, even in chroot
 5. Reboot into the installed system
 
 This is designed to be **transparent**, not fire-and-forget.
@@ -89,6 +71,6 @@ Use for reference, learning, or inspiration — not as a drop-in installer.
 ---
 
 ## Notes
-
+- This script can easily be modified to run a desktop environment like KDE or Gnome just by altering the pacstrap command, but you can do that inside the final install just as easily.
 This repo will evolve as my Arch workflow evolves.
 Expect breaking changes.
